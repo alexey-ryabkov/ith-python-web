@@ -1,0 +1,32 @@
+{
+  "name": "ith-python-web",
+  "version": "1.0.0",
+  "description": "ITHub Python on Web course app",
+  "homepage": "https://github.com/alexey-ryabkov/ith-python-web#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexey-ryabkov/ith-python-web.git"
+  },
+  "main": "",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "python3 app.py",
+    "build:css": "npx tailwindcss -i ./static/src/input.css -o ./static/dist/css/output.css",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "Alexey Ryabkov <xelaris@ya.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "3.3.3",
+    "prettier-plugin-jinja-template": "2.0.0",
+    "prettier-plugin-tailwindcss": "0.6.8",
+    "tailwindcss": "3.4.14"
+  },
+  "dependencies": {
+    "flowbite": "2.5.2"
+  }
+}
