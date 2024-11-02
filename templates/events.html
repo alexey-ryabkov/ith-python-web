@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Список матчей</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Турнир</th>
+        <th>Команды</th>
+        <th>Счет</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
+        <tr>
+          <td>{{ event.date }}</td>
+          <td>{{ event.tournament }}</td>
+          <td>{{ event.teams }}</td>
+          <td>{{ event.score }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
