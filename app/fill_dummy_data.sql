@@ -1,4 +1,4 @@
-INSERT INTO Tournament (id, name) VALUES (1, 'РФПЛ')
+INSERT INTO Tournament (id, name) VALUES (1, 'РФПЛ');
 
 INSERT INTO Team (name) VALUES 
     ('Динамо'), ('Ростов'), ('Зенит'), ('Динамо Мх'), ('Локомотив'), 
@@ -13,4 +13,4 @@ INSERT INTO Event (time_start, tournament, home_team, guest_team, home_team_scor
     ('2024-11-03', 1, (SELECT id FROM Team WHERE name='Акрон'), (SELECT id FROM Team WHERE name='Крылья Советов'), 2, 0),
     ('2024-11-03', 1, (SELECT id FROM Team WHERE name='Ахмат'), (SELECT id FROM Team WHERE name='Пари НН'), 0, 2),
     ('2024-11-03', 1, (SELECT id FROM Team WHERE name='Факел'), (SELECT id FROM Team WHERE name='Химки'), 1, 1),
-    ('2024-11-03', 1, (SELECT id FROM Team WHERE name='Краснодар'), (SELECT id FROM Team WHERE name='Оренбург'), NULL, NULL);
+    ('2024-11-03', 1, (SELECT id FROM Team WHERE name='Краснодар'), (SELECT id FROM Team WHERE name='Оренбург'), 4, 0);
