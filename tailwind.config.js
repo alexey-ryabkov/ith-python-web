@@ -1,9 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: "jit",
   content: [
     "./templates/**/*.html",
     "./static/src/**/*.js",
     "./node_modules/flowbite/**/*.js",
+  ],
+  safelist: [
+    "text-red-800",
+    "bg-red-50",
+    "text-blue-800",
+    "bg-blue-50",
+    "text-green-800",
+    "bg-green-50",
+    "text-yellow-800",
+    "bg-yellow-50",
+    "text-gray-800",
+    "bg-gray-50",
   ],
   theme: {
     extend: {},

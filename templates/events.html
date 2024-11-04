@@ -1,24 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h2>Список матчей</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Дата</th>
-        <th>Турнир</th>
-        <th>Команды</th>
-        <th>Счет</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for event in events %}
+  <h2 class="mb-6 text-2xl font-semibold">{{ title }}</h2>
+  {% if events %}
+    <table class="min-w-full overflow-hidden rounded-lg bg-white shadow-md">
+      <thead class="bg-blue-600 text-white">
         <tr>
-          <td>{{ event.date }}</td>
-          <td>{{ event.tournament }}</td>
-          <td>{{ event.teams }}</td>
-          <td>{{ event.score }}</td>
+          <th class="p-3 text-left text-sm font-semibold">Дата</th>
+          <th class="p-3 text-left text-sm font-semibold">Турнир</th>
+          <th class="p-3 text-left text-sm font-semibold">Хозяева</th>
+          <th class="p-3 text-left text-sm font-semibold">Счет</th>
+          <th class="p-3 text-left text-sm font-semibold">Гости</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="text-gray-700">
+        {% for event in events %}
+          <tr class="border-b hover:bg-gray-100">
+            <td class="p-3">{{ event.date }}</td>
+            <td class="p-3">{{ event.tournament }}</td>
+            <td class="p-3">{{ event.home_team }}</td>
+            <td class="p-3">{{ event.score }}</td>
+            <td class="p-3">{{ event.guest_team }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div
+      class="rounded-lg bg-gray-50 p-4 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-300"
+      role="alert"
+    >
+      Список событий пока пуст
+    </div>
+  {% endif %}
 {% endblock %}

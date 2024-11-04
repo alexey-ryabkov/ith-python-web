@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Match Results!</title>
+    <title>Результаты матчей!</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static',filename='dist/css/output.css') }}"
@@ -16,39 +16,31 @@
   </head>
 
   <body>
-    <header>
-      <h1>Результаты матчей</h1>
-      <nav>
-        <a href="{{ url_for('events') }}">Все события</a>
-        <a href="{{ url_for('favorites') }}">Мои события</a>
-        {% if current_user.is_authenticated %}
-          <a href="{{ url_for('profile') }}">Профиль</a>
-          <a href="{{ url_for('logout') }}">Выйти</a>
+    <header
+      class="flex items-center justify-between bg-blue-800 p-4 text-white"
+    >
+      <h1 class="text-lg font-bold">Результаты матчей</h1>
+      <nav class="flex space-x-4">
+        <a href="{{ url_for('events') }}" class="hover:underline">События</a>
+        {% if is_user_authorized() %}
+          <a href="{{ url_for('favorites') }}" class="hover:underline"
+            >Избранное</a
+          >
+          <a href="{{ url_for('profile') }}" class="hover:underline">Профиль</a>
+          <a href="{{ url_for('logout') }}" class="hover:underline">Выйти</a>
         {% else %}
-          <a href="{{ url_for('signin') }}">Войти</a>
-          <a href="{{ url_for('signup') }}">Регистрация</a>
+          <a href="{{ url_for('signin') }}" class="hover:underline">Войти</a>
+          <a href="{{ url_for('signup') }}" class="hover:underline"
+            >Регистрация</a
+          >
         {% endif %}
       </nav>
     </header>
-    <main>{% block content %}{% endblock %}</main>
-    <footer>
+    <main class="container mx-auto p-6">{% block content %}{% endblock %}</main>
+    <footer class="mt-6 bg-gray-800 p-4 text-center text-white">
       Учебный проект создан в рамках обучения по программе на бизнес-роль
       &laquo;фронтенд-разработчик&raquo; для курса Python&nbsp;on&nbsp;Web
     </footer>
-    <!-- <h1
-      x-data="{ message: 'I ❤️ Flask & Alpine & Flowbite!' }"
-      x-text="message"
-    ></h1>
-    <div x-data="{ count: 0 }">
-      <button
-        x-on:click="count++"
-        type="button"
-        class="mb-2 me-2 rounded-lg bg-gray-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-      >
-        Test it all works
-      </button>
-      <span x-text="count"></span>
-    </div> -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
   </body>
 </html>
