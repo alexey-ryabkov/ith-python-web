@@ -1,8 +1,6 @@
 import mysql.connector
-
-# import os
-from db_utils import execute_sql_file
-from config import DB_CONFIG
+from .utils import execute_sql_file
+from ..config import DB_CONFIG
 
 
 class DatabaseManager:
@@ -21,12 +19,12 @@ class DatabaseManager:
         self.conn.commit()
 
     def _create_tables(self):
-        execute_sql_file(self.cursor, "./app/create_tables.sql")
+        execute_sql_file(self.cursor, "./app/db/create_tables.sql")
 
     def _load_init_data(self):
         # SELECT * FROM Team;
         # -- TRUNCATE TABLE Event; TRUNCATE TABLE Team; TRUNCATE TABLE Tournament;
-        execute_sql_file(self.cursor, "./app/fill_dummy_data.sql")
+        execute_sql_file(self.cursor, "./app/db/fill_dummy_data.sql")
 
     def __enter__(self):
         # self.cursor = self.conn.cursor(dictionary=True)

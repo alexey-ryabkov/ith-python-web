@@ -8,5 +8,5 @@ DB_CONFIG = {
     "user": os.getenv("DB_USER", "root"),
     "password": os.getenv("DB_PASSWORD", ""),
     "database": os.getenv("DB_DATABASE", "match_result"),
-    "port": os.getenv("DB_PORT", "3306"),
+    "port": int(os.getenv("DB_PORT", "3306")),
 }
