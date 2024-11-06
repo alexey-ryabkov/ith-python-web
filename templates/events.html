@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
   <h2 class="mb-6 text-2xl font-semibold">{{ title }}</h2>
+  {% set messages = get_flashed_messages(with_categories=True) %}
+  {% include 'messages.html' %}
   {% if events %}
     <table class="min-w-full overflow-hidden rounded-lg bg-white shadow-md">
       <thead class="bg-blue-600 text-white">
@@ -9,7 +11,10 @@
           <th class="p-3 text-left text-sm font-semibold">Турнир</th>
           <th class="p-3 text-left text-sm font-semibold">Хозяева</th>
           <th class="p-3 text-left text-sm font-semibold">Счет</th>
-          <th class="p-3 text-left text-sm font-semibold">Гости</th>
+          <th class="p-3 text-left text-sm font-semibold">Гости</th> 
+          {% if show_fav %}        
+          <th></th>
+          {% endif %}
         </tr>
       </thead>
       <tbody class="text-gray-700">
@@ -20,6 +25,20 @@
             <td class="p-3">{{ event.home_team }}</td>
             <td class="p-3">{{ event.score }}</td>
             <td class="p-3">{{ event.guest_team }}</td>
+            {% if show_fav %}
+            <td class="p-3">
+              {% if 'is_favorite' in event %}
+              <form action="{{ url_for('change_fav_list', event_id=event.id, next=request.path) }}" method="post">
+                {% if event.is_favorite %}
+                  <input type="hidden" name="_method" value="DELETE" />
+                  <button type="submit">💔</button>           
+                {% else %}
+                  <button type="submit">❤️</button>
+                {% endif %}
+              </form> 
+              {% endif %}
+            </td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>

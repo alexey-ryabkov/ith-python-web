@@ -3,7 +3,11 @@ from flask import render_template, redirect, url_for, request, flash
 from mysql.connector import Error
 from app import app
 from app.session import is_user_authorized
-from app.controllers.event import process_events
+from app.controllers.event import (
+    process_events,
+    process_add_event_2fav,
+    process_del_event_from_fav,
+)
 from app.controllers.auth import (
     process_signup,
     process_signin,
@@ -24,6 +28,7 @@ def check_user_auth(func):
         return func(*args, **kwargs)
 
     return wrapped_func
+
 
 def check_user_anonym(func):
     @wraps(func)
@@ -46,15 +51,39 @@ def main():
 
 @app.route("/events")
 def events():
-    events_data = process_events(request)
-    return render_template("events.html", events=events_data, title="Последние события")
+    show_fav=is_user_authorized()
+    events_data=process_events(request)
+    return render_template(
+        "events.html", events=events_data, show_fav=show_fav, title="Последние события"
+    )
 
 
 @app.route("/favorites")
 @check_user_auth
 def favorites():
-    events_data = process_events(request)
-    return render_template("events.html", events=events_data, title="Избранные события")
+    events_data=process_events(request, True)
+    return render_template(
+        "events.html", events=events_data, show_fav=True, title="Избранные события"
+    )
+
+
+@app.route("/favorites/<int:event_id>", methods=["POST", "DELETE"])
+@check_user_auth
+def change_fav_list(event_id):
+    try:
+        if request.method != "DELETE" and request.form.get("_method") != "DELETE":
+            if process_add_event_2fav(request, event_id):
+                flash("Событие добавлено в избранное", "success")
+            else:
+                flash("Событие уже добавлено в избранное", "info")
+        else:
+            if process_del_event_from_fav(request, event_id):
+                flash("Событие удалено из избранного", "success")
+            else:
+                flash("Этого события уже нет в избранном", "info")
+    except Error as e:
+        flash(f"При изменении списка избранных событий возникла ошибка: {e}", "error")
+    return redirect(request.args.get("next", "/events"))
 
 
 @app.route("/signup", methods=["GET", "POST"])
