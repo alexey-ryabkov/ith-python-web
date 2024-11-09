@@ -5,7 +5,6 @@ from .session import is_user_authorized
 
 app = Flask(
     __name__,
-    template_folder=os.path.join(os.path.dirname(__file__), "..", "templates"),
     static_folder=os.path.join(os.path.dirname(__file__), "..", "static"),
 )
 app.secret_key = os.urandom(24)
