@@ -2,6 +2,7 @@ from functools import wraps
 from flask import render_template, redirect, url_for, request, flash
 from mysql.connector import Error
 from app import app
+from app.config import FLASK_PORT
 from app.session import is_user_authorized
 from app.controllers.event import (
     process_events,
@@ -80,7 +81,7 @@ def change_fav_list(event_id):
             if process_del_event_from_fav(request, event_id):
                 flash("Событие удалено из избранного", "success")
             else:
-                flash("Этого события уже нет в избранном", "info")
+                flash("События уже нет в избранном", "info")            
     except Error as e:
         flash(f"При изменении списка избранных событий возникла ошибка: {e}", "error")
     return redirect(request.args.get("next", "/events"))
@@ -139,4 +140,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=FLASK_PORT)

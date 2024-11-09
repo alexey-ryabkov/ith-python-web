@@ -13,20 +13,29 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "start": "python3 app.py",
-    "build:css": "npx tailwindcss -i ./static/src/input.css -o ./static/dist/css/output.css",
+    "start": "npm-run-all build:css serve-n-open",
+    "build:css": "npx tailwindcss -i ./app/client/css/styles.css -o ./static/css/build.css",
+    "serve-n-open": "concurrently \"npm run serve\" \"npm run open\"",
+    "serve": "./ith-python-web_env/bin/python3  server.py",
+    "open": "env-cmd -f .env wait-on http://127.0.0.1:$FLASK_PORT && npx open-cli http://127.0.0.1:$FLASK_PORT",
     "format": "prettier --write ."
   },
   "keywords": [],
   "author": "Alexey Ryabkov <xelaris@ya.com>",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^9.1.0",
+    "dotenv": "16.4.5",
+    "npm-run-all": "4.1.5",
+    "open-cli": "8.0.0",
     "prettier": "3.3.3",
     "prettier-plugin-jinja-template": "2.0.0",
     "prettier-plugin-tailwindcss": "0.6.8",
-    "tailwindcss": "3.4.14"
+    "tailwindcss": "3.4.14",
+    "wait-on": "8.0.1"
   },
   "dependencies": {
+    "env-cmd": "^10.1.0",
     "flowbite": "2.5.2"
   }
 }

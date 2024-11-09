@@ -16,7 +16,7 @@ def validate_user_data_input(user_data):
     ):
         raise ValueError(
             f"""Неверный формат логина (от {MIN_LOGIN_LEN} до {MAX_LOGIN_LEN} символов,
-            можно использовать латинские буквы, цифры, символ подчеркивания"""
+            нужно использовать латинские буквы, можно использовать цифры и символ подчеркивания"""
         )
     if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", user_data["email"].strip()):
         raise ValueError("Неверный формат e-mail")

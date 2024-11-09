@@ -10,3 +10,5 @@ DB_CONFIG = {
     "database": os.getenv("DB_DATABASE", "match_result"),
     "port": int(os.getenv("DB_PORT", "3306")),
 }
+
+FLASK_PORT = int(os.getenv("FLASK_PORT", "5000"))
