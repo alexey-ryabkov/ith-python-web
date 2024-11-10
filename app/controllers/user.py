@@ -8,7 +8,7 @@ from ..validate import validate_user_data
 def process_profile(request):
     data = request.form
     with DatabaseManager() as cursor:
-        validate_user_data(cursor, data)
+        validate_user_data(cursor, data, True)
         edit_user(
             cursor,
             get_user(),

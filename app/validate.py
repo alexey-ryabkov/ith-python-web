@@ -30,9 +30,9 @@ def validate_user_data_input(user_data):
         )
 
 
-def validate_user_data(cursor, user_data):
+def validate_user_data(cursor, user_data, editing=False):
     validate_user_data_input(user_data)
     login = user_data["login"]
     email = user_data["email"]
-    if not is_unique_login_email(cursor, login, email):
+    if not editing and not is_unique_login_email(cursor, login, email):
         raise ValueError("Логин и e-mail должны быть уникальны!")
