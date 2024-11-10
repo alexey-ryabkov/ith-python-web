@@ -1,7 +1,7 @@
 import os
 import mysql.connector
 from .utils import execute_sql_file
-from ..config import DB_CONFIG
+from ..config import APP_CONFIG
 
 
 def _get_path(sql):
@@ -11,21 +11,21 @@ def _get_path(sql):
 class DatabaseManager:
     def __init__(self):
         try:
-            self.conn = mysql.connector.connect(**DB_CONFIG)
+            self.conn = mysql.connector.connect(**APP_CONFIG["db"])
             self.cursor = self.conn.cursor(dictionary=True)
             self.prepare()
         except mysql.connector.Error as e:
             if e.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 # `ll try to create db if it appears to be unknown
                 db_config_wo_database = {
-                    k: v for k, v in DB_CONFIG.items() if k != "database"
+                    k: v for k, v in APP_CONFIG["db"].items() if k != "database"
                 }
                 self.conn = mysql.connector.connect(**db_config_wo_database)
 
                 cursor = self.conn.cursor(dictionary=True)
-                cursor.execute(f"CREATE DATABASE {DB_CONFIG['database']}")
+                cursor.execute(f"CREATE DATABASE {APP_CONFIG['db']['database']}")
                 self.conn.commit()
-                cursor.execute(f"USE {DB_CONFIG['database']}")
+                cursor.execute(f"USE {APP_CONFIG['db']['database']}")
                 cursor.close()
 
                 self.cursor = self.conn.cursor(dictionary=True)

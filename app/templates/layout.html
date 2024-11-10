@@ -45,7 +45,7 @@
             <div
               class="flex items-center space-x-1 md:order-2 md:space-x-2 rtl:space-x-reverse"
             >
-              {% if is_user_authorized() %}
+              {% if is_user_authorized %}
                 <button
                   type="button"
                   class="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 md:me-0"
@@ -136,7 +136,11 @@
               class="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0"
             >
               {% for _, page in pages.items() %}
-                {% if page and page.url %}
+                {%
+                  if page.get('in_menu', True)
+                  and (not page.get('auth_only', False) or is_user_authorized)
+                  and (not page.get('anonym_only', False) or not is_user_authorized)
+                %}
                   <li class="{{ page.cls or '' }}">
                     <a
                       href="{{ page.url }}"
