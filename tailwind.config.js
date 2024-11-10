@@ -1,14 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./app/templates/**/*.html",
-    "./node_modules/flowbite/**/*.js",
-  ],
+  content: ["./app/templates/**/*.html", "./node_modules/flowbite/**/*.js"],
   safelist: [
     "text-red-800",
     "bg-red-50",
-    "text-blue-800",
-    "bg-blue-50",
+    "text-emerald-800",
+    "bg-emerald-50",
     "text-green-800",
     "bg-green-50",
     "text-yellow-800",

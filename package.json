@@ -18,6 +18,7 @@
     "serve-n-open": "concurrently \"npm run serve\" \"npm run open\"",
     "serve": "./ith-python-web_env/bin/python3  server.py",
     "open": "env-cmd -f .env wait-on http://127.0.0.1:$FLASK_PORT && npx open-cli http://127.0.0.1:$FLASK_PORT",
+    "dev:css": "npm run build:css -- --watch",
     "format": "prettier --write ."
   },
   "keywords": [],
