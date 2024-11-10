@@ -24,6 +24,13 @@ def edit_user(cursor, user_id, login, email, password):
     )
 
 
-def get_user_data(cursor, login):
-    cursor.execute("SELECT * FROM User WHERE login = %s", (login,))
+def get_user_data(cursor, identifier):
+    SQL = "SELECT * FROM User WHERE "
+    if isinstance(identifier, str):
+        SQL += "login = %s"
+    elif isinstance(identifier, int):
+        SQL += "id = %s"
+    else:
+        return None
+    cursor.execute(SQL, (identifier,))
     return cursor.fetchone()
