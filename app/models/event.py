@@ -3,7 +3,7 @@ def get_events_data(cursor, fav_4user=None, filter_fav=False):
     SQL = f"""
         SELECT 
           e.id, 
-          e.time_start, 
+          e.time_start AS datetime, 
           t.name AS tournament, 
           ht.name AS home_team, 
           CONCAT(home_team_score, ':', guest_team_score) AS score, 
@@ -24,13 +24,15 @@ def get_events_data(cursor, fav_4user=None, filter_fav=False):
             JOIN FavoriteEvent fe ON e.id = fe.event 
             WHERE fe.user = %s
         """
+    elif fav_4user:
+        SQL += "LEFT JOIN FavoriteEvent fe ON e.id = fe.event AND fe.user = %s"
+    SQL += " ORDER BY e.time_start DESC, ht.name"
+
+    if filter_fav or fav_4user:
         cursor.execute(SQL, (fav_4user,))
     else:
-        if fav_4user:
-            SQL += "LEFT JOIN FavoriteEvent fe ON e.id = fe.event AND fe.user = %s"
-            cursor.execute(SQL, (fav_4user,))
-        else:
-            cursor.execute(SQL)
+        cursor.execute(SQL)
+
     return cursor.fetchall()
 
 
