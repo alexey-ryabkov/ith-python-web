@@ -1,36 +1,56 @@
+import os
 import mysql.connector
 from .utils import execute_sql_file
 from ..config import DB_CONFIG
 
 
+def _get_path(sql):
+    return os.path.join(os.path.dirname(__file__), sql)
+
+
 class DatabaseManager:
     def __init__(self):
-        self.conn = mysql.connector.connect(**DB_CONFIG)
-        self.cursor = self.conn.cursor(dictionary=True)
-        self.prepare()
+        try:
+            self.conn = mysql.connector.connect(**DB_CONFIG)
+            self.cursor = self.conn.cursor(dictionary=True)
+            self.prepare()
+        except mysql.connector.Error as e:
+            if e.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
+                # `ll try to create db if it appears to be unknown
+                db_config_wo_database = {
+                    k: v for k, v in DB_CONFIG.items() if k != "database"
+                }
+                self.conn = mysql.connector.connect(**db_config_wo_database)
 
-    def prepare(self):
-        print("prepare!!!")
-        self._create_tables()
-        self.cursor.execute("SELECT COUNT(*) as cnt FROM Event")
-        if self.cursor.fetchone()["cnt"] == 0:
-            self._load_init_data()
+                cursor = self.conn.cursor(dictionary=True)
+                cursor.execute(f"CREATE DATABASE {DB_CONFIG['database']}")
+                self.conn.commit()
+                cursor.execute(f"USE {DB_CONFIG['database']}")
+                cursor.close()
 
-        self.conn.commit()
-
-    def _create_tables(self):
-        execute_sql_file(self.cursor, "./app/db/create_tables.sql")
-
-    def _load_init_data(self):
-        # SELECT * FROM Team;
-        # -- TRUNCATE TABLE Event; TRUNCATE TABLE Team; TRUNCATE TABLE Tournament;
-        execute_sql_file(self.cursor, "./app/db/fill_dummy_data.sql")
+                self.cursor = self.conn.cursor(dictionary=True)
+                self.prepare()
+            else:
+                raise e
 
     def __enter__(self):
-        # self.cursor = self.conn.cursor(dictionary=True)
         return self.cursor
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.conn.commit()
         self.cursor.close()
         self.conn.close()
+
+    def prepare(self):
+        # print("prepare!!!")
+        self._create_tables()
+        self.cursor.execute("SELECT COUNT(*) as cnt FROM Event")
+        if self.cursor.fetchone()["cnt"] == 0:
+            self._load_init_data()
+        self.conn.commit()
+
+    def _create_tables(self):
+        execute_sql_file(self.cursor, _get_path("create_tables.sql"))
+
+    def _load_init_data(self):
+        execute_sql_file(self.cursor, _get_path("fill_dummy_data.sql"))
